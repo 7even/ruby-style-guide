@@ -186,6 +186,7 @@ Translations of the guide are available in the following languages:
     a, b = 1, 2
     1 > 2 ? true : false; puts 'Hi'
     [1, 2, 3].each { |e| puts e }
+    { one: 1, two: 2 }
     ```
 
     The only exception, regarding operators, is the exponent operator:
@@ -197,23 +198,6 @@ Translations of the guide are available in the following languages:
     # good
     e = M * c**2
     ```
-
-    `{` and `}` deserve a bit of clarification, since they are used
-    for block and hash literals, as well as embedded expressions in
-    strings. For hash literals two styles are considered acceptable.
-
-    ```Ruby
-    # good - space after { and before }
-    { one: 1, two: 2 }
-
-    # good - no space after { and before }
-    {one: 1, two: 2}
-    ```
-
-    The first variant is slightly more readable (and arguably more
-    popular in the Ruby community in general). The second variant has
-    the advantage of adding visual difference between block and hash
-    literals. Whichever one you pick - apply it consistently.
 
     As far as embedded expressions go, there are also two acceptable
     options:
@@ -278,60 +262,6 @@ Translations of the guide are available in the following languages:
     end
     ```
 
-* When assigning the result of a conditional expression to a variable, preserve the usual alignment of its branches.
-
-    ```Ruby
-    # bad - pretty convoluted
-    kind = case year
-    when 1850..1889 then 'Blues'
-    when 1890..1909 then 'Ragtime'
-    when 1910..1929 then 'New Orleans Jazz'
-    when 1930..1939 then 'Swing'
-    when 1940..1950 then 'Bebop'
-    else 'Jazz'
-    end
-
-    result = if some_cond
-      calc_something
-    else
-      calc_something_else
-    end
-
-    # good - it's apparent what's going on
-    kind = case year
-           when 1850..1889 then 'Blues'
-           when 1890..1909 then 'Ragtime'
-           when 1910..1929 then 'New Orleans Jazz'
-           when 1930..1939 then 'Swing'
-           when 1940..1950 then 'Bebop'
-           else 'Jazz'
-           end
-
-    result = if some_cond
-               calc_something
-             else
-               calc_something_else
-             end
-
-    # good (and a bit more width efficient)
-    kind =
-      case year
-      when 1850..1889 then 'Blues'
-      when 1890..1909 then 'Ragtime'
-      when 1910..1929 then 'New Orleans Jazz'
-      when 1930..1939 then 'Swing'
-      when 1940..1950 then 'Bebop'
-      else 'Jazz'
-      end
-
-    result =
-      if some_cond
-        calc_something
-      else
-        calc_something_else
-      end
-    ```
-
 * Use empty lines between method definitions and also to break up a method into logical
   paragraphs internally.
 
@@ -382,7 +312,8 @@ Translations of the guide are available in the following languages:
                   ' and second part of the long string'
     ```
 
-* When continuing a chained method invocation on another line keep the `.` on the second line.
+* When continuing a chained method invocation on another line
+  keep the `.` on the second line (but generally try to avoid such situations).
 
     ```Ruby
     # bad - need to consult first line to understand second line
@@ -395,9 +326,7 @@ Translations of the guide are available in the following languages:
     ```
 
 * Align the parameters of a method call if they span more than one
-  line. When aligning parameters is not appropriate due to line-length
-  constraints, single indent for the lines after the first is also
-  acceptable.
+  line.
 
     ```Ruby
     # starting point (line is too long)
@@ -416,19 +345,21 @@ Translations of the guide are available in the following languages:
 
     # good
     def send_mail(source)
-      Mailer.deliver(to: 'bob@example.com',
-                     from: 'us@example.com',
-                     subject: 'Important message',
-                     body: source.text)
-    end
-
-    # good (normal indent)
-    def send_mail(source)
       Mailer.deliver(
         to: 'bob@example.com',
         from: 'us@example.com',
         subject: 'Important message',
         body: source.text
+      )
+    end
+    
+    # better (both keys and values are aligned)
+    def send_mail(source)
+      Mailer.deliver(
+        to:      'bob@example.com',
+        from:    'us@example.com',
+        subject: 'Important message',
+        body:    source.text
       )
     end
     ```
@@ -445,11 +376,6 @@ Translations of the guide are available in the following languages:
       "Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam",
       "Baked beans", "Spam", "Spam", "Spam", "Spam", "Spam"
     ]
-
-    # good
-    menu_item =
-      ["Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam", "Spam",
-       "Baked beans", "Spam", "Spam", "Spam", "Spam", "Spam"]
     ```
 
 * Add underscores to large numeric literals to improve their readability.
@@ -462,7 +388,7 @@ Translations of the guide are available in the following languages:
     num = 1_000_000
     ```
 
-* Use RDoc and its conventions for API documentation.  Don't put an
+* Use RDoc/YARD and its conventions for API documentation.  Don't put an
   empty line between the comment block and the `def`.
 * Limit lines to 80 characters.
 * Avoid trailing whitespace.
@@ -681,7 +607,7 @@ Never use `::` for regular method invocation.
 * Avoid multi-line `?:` (the ternary operator); use `if/unless` instead.
 
 * Favor modifier `if/unless` usage when you have a single-line
-  body. Another good alternative is the usage of control flow `&&/||`.
+  body. Another good alternative is the usage of control flow `&&`/`||`.
 
     ```Ruby
     # bad
@@ -792,20 +718,20 @@ Never use `::` for regular method invocation.
 
 * Use `Kernel#loop` with break rather than `begin/end/until` or `begin/end/while` for post-loop tests.
 
-   ```Ruby
-   # bad
-   begin
-     puts val
-     val += 1
-   end while val < 0
+    ```Ruby
+    # bad
+    begin
+      puts val
+      val += 1
+    end while val < 0
 
-   # good
-   loop do
-     puts val
-     val += 1
-     break unless val < 0
-   end
-   ```
+    # good
+    loop do
+      puts val
+      val += 1
+      break unless val < 0
+    end
+    ```
 
 * Omit parentheses around parameters for methods that are part of an
   internal DSL (e.g. Rake, Rails, RSpec), methods that have
@@ -964,32 +890,6 @@ Never use `::` for regular method invocation.
     end
     ```
 
-* Don't use the return value of `=` (an assignment) in conditional
-  expressions unless the assignment is wrapped in parentheses. This is
-  a fairly popular idiom among Rubyists that's sometimes referred to as
-  *safe assignment in condition*.
-
-    ```Ruby
-    # bad (+ a warning)
-    if v = array.grep(/foo/)
-      do_something(v)
-      ...
-    end
-
-    # good (MRI would still complain, but RuboCop won't)
-    if (v = array.grep(/foo/))
-      do_something(v)
-      ...
-    end
-
-    # good
-    v = array.grep(/foo/)
-    if v
-      do_something(v)
-      ...
-    end
-    ```
-
 * Use `||=` freely to initialize variables.
 
     ```Ruby
@@ -1135,15 +1035,12 @@ setting the warn level to 0 via `-W0`).
     # good
     sprintf('%d %d', 20, 10)
     # => '20 10'
-
-    # good
-    sprintf('%{first} %{second}', first: 20, second: 10)
-    # => '20 10'
-
     format('%d %d', 20, 10)
     # => '20 10'
 
     # good
+    sprintf('%{first} %{second}', first: 20, second: 10)
+    # => '20 10'
     format('%{first} %{second}', first: 20, second: 10)
     # => '20 10'
     ```
@@ -1191,7 +1088,7 @@ setting the warn level to 0 via `-W0`).
     ```
 
 * Favor the use of predicate methods to explicit comparisons with
-  `==`. Numeric comparisons are OK.
+  `==`.
 
     ```Ruby
     # bad
@@ -1202,6 +1099,9 @@ setting the warn level to 0 via `-W0`).
     end
 
     if x == nil
+    end
+
+    if x == 0
     end
 
     # good
@@ -1216,9 +1116,6 @@ setting the warn level to 0 via `-W0`).
 
     if x.zero?
     end
-
-    if x == 0
-    end
     ```
 
 * Avoid the use of `BEGIN` blocks.
@@ -1227,11 +1124,9 @@ setting the warn level to 0 via `-W0`).
 
     ```ruby
     # bad
-
     END { puts 'Goodbye!' }
 
     # good
-
     at_exit { puts 'Goodbye!' }
     ```
 
@@ -1243,24 +1138,24 @@ setting the warn level to 0 via `-W0`).
 
     ```Ruby
     # bad
-      def compute_thing(thing)
-        if thing[:foo]
-          update_with_bar(thing)
-          if thing[:foo][:bar]
-            partial_compute(thing)
-          else
-            re_compute(thing)
-          end
+    def compute_thing(thing)
+      if thing[:foo]
+        update_with_bar(thing[:foo])
+        if thing[:foo][:bar]
+          partial_compute(thing)
+        else
+          re_compute(thing)
         end
       end
+    end
 
     # good
-      def compute_thing(thing)
-        return unless thing[:foo]
-        update_with_bar(thing[:foo])
-        return re_compute(thing) unless thing[:foo][:bar]
-        partial_compute(thing)
-      end
+    def compute_thing(thing)
+      return unless thing[:foo]
+      update_with_bar(thing[:foo])
+      return re_compute(thing) unless thing[:foo][:bar]
+      partial_compute(thing)
+    end
     ```
 
 ## Naming
