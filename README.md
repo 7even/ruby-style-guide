@@ -391,7 +391,33 @@ Translations of the guide are available in the following languages:
 * Use RDoc/YARD and its conventions for API documentation.  Don't put an
   empty line between the comment block and the `def`.
 * Limit lines to 80 characters.
-* Avoid trailing whitespace.
+* Avoid trailing whitespace, but:
+* Keep indentation on empty lines (`∙` means a space character here).
+
+    ``` ruby
+    # bad
+    class User
+    ∙∙def name
+    ∙∙∙∙# some code
+    ∙∙end
+    
+    ∙∙def age
+    ∙∙∙∙# some other code
+    ∙∙end
+    end
+    
+    # good
+    class User
+    ∙∙def name
+    ∙∙∙∙# some code
+    ∙∙end
+    ∙∙
+    ∙∙def age
+    ∙∙∙∙# some other code
+    ∙∙end
+    end
+    ```
+
 * Don't use block comments. They cannot be preceded by whitespace and are not
 as easy to spot as regular comments.
 
