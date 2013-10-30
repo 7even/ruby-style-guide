@@ -428,27 +428,27 @@ Never use `::` for regular method invocation.
 * Use `def` with parentheses when there are arguments. Omit the
   parentheses when the method doesn't accept any arguments.
 
-     ```Ruby
-     # bad
-     def some_method()
-       # body omitted
-     end
+    ```Ruby
+    # bad
+    def some_method()
+      # body omitted
+    end
 
-     # good
-     def some_method
-       # body omitted
-     end
+    # good
+    def some_method
+      # body omitted
+    end
 
-     # bad
-     def some_method_with_arguments arg1, arg2
-       # body omitted
-     end
+    # bad
+    def some_method_with_arguments arg1, arg2
+      # body omitted
+    end
 
-     # good
-     def some_method_with_arguments(arg1, arg2)
-       # body omitted
-     end
-     ```
+    # good
+    def some_method_with_arguments(arg1, arg2)
+      # body omitted
+    end
+    ```
 
 * Never use `for`, unless you know exactly why. Most of the time iterators
   should be used instead. `for` is implemented in terms of `each` (so
@@ -1292,8 +1292,6 @@ setting the warn level to 0 via `-W0`).
     end
     ```
 
-* When using `reduce` with short blocks, name the arguments `|a, e|`
-  (accumulator, element).
 * When defining binary operators, name the argument `other`(`<<` and
   `[]` are exceptions to the rule, since their semantics are different).
 
@@ -1304,7 +1302,7 @@ setting the warn level to 0 via `-W0`).
     ```
 
 * Prefer `map` over `collect`, `find` over `detect`, `select` over
-  `find_all`, `reduce` over `inject` and `size` over `length`. This is
+  `find_all`, `inject` over `reduce` and `size` over `length`. This is
   not a hard requirement; if the use of the alias enhances
   readability, it's ok to use it. The rhyming methods are inherited from
   Smalltalk and are not common in other programming languages. The
@@ -1373,7 +1371,7 @@ at all.
 * The annotation keyword is followed by a colon and a space, then a note
   describing the problem.
 * If multiple lines are required to describe the problem, subsequent
-  lines should be indented two spaces after the `#`.
+  lines should be indented two spaces relative to the first line.
 
     ```Ruby
     def bar
@@ -1434,13 +1432,11 @@ at all.
       end
 
       # protected and private methods are grouped near the end
-      protected
-
+    protected
       def some_protected_method
       end
 
-      private
-
+    private
       def some_private_method
       end
     end
@@ -1507,7 +1503,7 @@ at all.
 * When designing class hierarchies make sure that they conform to the
   [Liskov Substitution Principle](http://en.wikipedia.org/wiki/Liskov_substitution_principle).
 * Try to make your classes as
-  [SOLID](http://en.wikipedia.org/wiki/SOLID_(object-oriented_design\))
+  [SOLID](http://en.wikipedia.org/wiki/SOLID_(object-oriented_design))
   as possible.
 * Always supply a proper `to_s` method for classes that represent
   domain objects.
@@ -1585,9 +1581,8 @@ constructor and comparison operators for you.
     end
 
     # better
-    Person = Struct.new(:first_name, :last_name) do
-    end
-    ````
+    Person = Struct.new(:first_name, :last_name)
+    ```
 
 * Don't extend a `Struct.new` - it already is a new class. Extending it introduces a superfluous class level and may also introduce weird errors if the file is required multiple times.
 
@@ -1667,10 +1662,9 @@ in inheritance.
 in accordance with their intended usage. Don't go off leaving
 everything `public` (which is the default). After all we're coding
 in *Ruby* now, not in *Python*.
-* Indent the `public`, `protected`, and `private` methods as much the
-  method definitions they apply to. Leave one blank line above the
-  visibility modifier
-  and one blank line below in order to emphasize that it applies to all
+* Indent the `public`, `protected`, and `private` methods at the same level
+  as `class` and `end` keywords making up the class. Leave one blank line above the
+  visibility modifier in order to emphasize that it applies to all
   methods below it.
 
     ```Ruby
@@ -1679,8 +1673,7 @@ in *Ruby* now, not in *Python*.
         # ...
       end
 
-      private
-
+    private
       def private_method
         # ...
       end
