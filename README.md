@@ -1886,7 +1886,6 @@ in *Ruby* now, not in *Python*.
     # also good
     begin
       # an exception occurs here
-
     rescue StandardError => e
       # exception handling
     end
@@ -2035,28 +2034,28 @@ this rule only to arrays with two or more elements.
 
 * Introduce default values for hash keys via `Hash#fetch` as opposed to using custom logic.
 
-   ```Ruby
-   batman = { name: 'Bruce Wayne', is_evil: false }
+    ```Ruby
+    batman = { name: 'Bruce Wayne', is_evil: false }
 
-   # bad - if we just use || operator with falsy value we won't get the expected result
-   batman[:is_evil] || true # => true
+    # bad - if we just use || operator with falsy value we won't get the expected result
+    batman[:is_evil] || true # => true
 
-   # good - fetch work correctly with falsy values
-   batman.fetch(:is_evil, true) # => false
-   ```
+    # good - fetch work correctly with falsy values
+    batman.fetch(:is_evil, true) # => false
+    ```
 
 * Prefer the use of the block instead of the default value in `Hash#fetch`.
 
-   ```Ruby
-   batman = { name: 'Bruce Wayne' }
+    ```Ruby
+    batman = { name: 'Bruce Wayne' }
 
-   # bad - if we use the default value, we eager evaluate it
-   # so it can slow the program down if done multiple times
-   batman.fetch(:powers, get_batman_powers) # get_batman_powers is an expensive call
+    # bad - if we use the default value, we eager evaluate it
+    # so it can slow the program down if done multiple times
+    batman.fetch(:powers, get_batman_powers) # get_batman_powers is an expensive call
 
-   # good - blocks are lazy evaluated, so only triggered in case of KeyError exception
-   batman.fetch(:powers) { get_batman_powers }
-   ```
+    # good - blocks are lazy evaluated, so only triggered in case of KeyError exception
+    batman.fetch(:powers) { get_batman_powers }
+    ```
 
 * Rely on the fact that as of Ruby 1.9 hashes are ordered.
 * Never modify a collection while traversing it.
@@ -2071,13 +2070,6 @@ this rule only to arrays with two or more elements.
 
     # good
     email_with_name = "#{user.name} <#{user.email}>"
-    ```
-
-* Consider padding string interpolation code with space. It more clearly sets the
-  code apart from the string.
-
-    ```Ruby
-    "#{ user.last_name }, #{ user.first_name }"
     ```
 
 * Prefer single-quoted strings when you don't need string interpolation or
@@ -2159,7 +2151,7 @@ this rule only to arrays with two or more elements.
       |  other_method
       |end
     END
-    #=> "def\n  some_method\n  \nother_method\nend"
+    # => "def\n  some_method\n  \nother_method\nend"
     ```
 
 ## Regular Expressions
@@ -2308,7 +2300,7 @@ this rule only to arrays with two or more elements.
     ```
 
 * Avoid the use of `%s`. It seems that the community has decided
-  `:"some string"` is the preferred way to created a symbol with
+  `:'some string'` is the preferred way to created a symbol with
   spaces in it.
 
 * Prefer `()` as delimiters for all `%` literals, except `%r`. Since
@@ -2340,7 +2332,7 @@ this rule only to arrays with two or more elements.
     class_eval 'def use_relative_model_naming?; true; end', __FILE__, __LINE__
     ```
 
-  - `define_method` is preferable to `class_eval{ def ... }`
+  - `define_method` is preferable to `class_eval { def ... }`
 
 * When using `class_eval` (or other `eval`) with string interpolation, add a comment block showing its appearance if interpolated (a practice I learned from the Rails code):
 
