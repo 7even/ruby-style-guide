@@ -199,21 +199,15 @@ Translations of the guide are available in the following languages:
     e = M * c**2
     ```
 
-    As far as embedded expressions go, there are also two acceptable
-    options:
+    Don't use spaces around embedded expressions:
 
     ```Ruby
-    # good - no spaces
-    "string#{expr}"
-
-    # ok - arguably more readable
-    "string#{ expr }"
+    # bad - extra spaces make the code less readable
+    "#{ user.first_name } #{ user.last_name }"
+    
+    # good
+    "#{user.first_name} #{user.last_name}"
     ```
-
-    The first style is extremely more popular and you're generally
-    advised to stick with it. The second, on the other hand, is
-    (arguably) a bit more readable. As with hashes - pick one style
-    and apply it consistently.
 
 * No spaces after `(`, `[` or before `]`, `)`.
 
